@@ -1,0 +1,30 @@
+name: Cache Demo
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  cache-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Restore cache
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache-demo
+          key: cache-9b638e5
+
+      - name: prime-cache-9b638e5
+        run: |
+          echo "Cache hit? ${{ steps.cache.outputs.cache-hit }}"
+
+      - name: Save something to cache path
+        run: |
+          mkdir -p ~/.cache-demo
+          echo "Hello cache!" > ~/.cache-demo/data.txt
